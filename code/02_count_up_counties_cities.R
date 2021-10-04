@@ -1,4 +1,4 @@
-# the goal of this script is to se the dplyr package to count up the
+# the goal of this script is to use the dplyr package to count up the
 # number of cities and counties in a given state that have detailed
 # Apple mobility data available and then eventually to save it to a csv
 
@@ -15,17 +15,12 @@ library("dplyr")
 # data. The input to this will be the output of the previous script
 # namely the state csv files that were already subsetted.
 
+source("code/functions/count_up_counties_cities.R")
+
 # load in the dataset from the previous script
-input_file_name <- "output/applemobilitytrends-2021-09-15_California.csv"
-state_data <- read.csv(input_file_name)
-
-
-# starting off with dplyr chains
-count_cities_counties_by_type <- state_data %>%
-  select(geo_type, region, transportation_type) %>%
-  group_by(geo_type, transportation_type) %>%
-  tally()
-
-#write out the result of the dplyr chain
-write.csv(count_cities_counties_by_type,
-          "output/california_cities_counties_counts.csv")
+for (file_state in c("Montana", "Alaska", "Utah", "Colorado",
+                     "Arizona")) {
+count_up_counties_cities(input_file_name =
+        paste0("output/01_subset_state_data/applemobilitytrends-2021-09-29_",
+                                     file_state, ".csv"))
+        }
