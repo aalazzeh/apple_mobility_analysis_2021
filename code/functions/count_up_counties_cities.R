@@ -18,44 +18,32 @@
 # load the package "dplyr"
 library("dplyr")
 
-
-# We would like to get a count of the number of cities and the
-# number of counties in a given state that have driving mobility
-# data. The input to this will be the output of the previous script
+# We would like to get a count of the number of cities, the
+# number of counties, and transportation type in a given state that have
+# mobility data. The input to this will be the output of the previous script
 # namely the state csv files that were already subsetted.
 
-count_up_counties_cities <- function(input_file_name,
-                                  state_to_subset,) {
+count_up_counties_cities <- function(input_file_name) {
+  # read in the last csv file, load in the dataset from the previous script
+  state_data <- read.csv(input_file_name)
 
-  # read in the complete csv file
-  all_covid_data <- read.csv(input_file_name)
-
-  # Subset the data set to only include rows where the sub.region column has
-  # The state name in it and we want all columns.
-  state_data <- all_covid_data[all_covid_data$sub.region == state_to_subset, ]
-
-  # check that the subsetted data actually has data in it
-  if (nrow(state_data) == 0) {
-    stop("ERROR: No rows matching given state name. Did you make a typo?")
-  }
-
-  # starting off with dplyr chains
-  tally_cities_counties_by_type <- state_data %>%
+  # Use dplyr chain to group each state by city, county and then
+   # transportaion type
+    tally_cities_counties_by_type <- state_data %>%
     select(geo_type, region, transportation_type) %>%
     group_by(geo_type, transportation_type) %>%
     tally()
 
+    # check that tally data actually has data in it
+    if (nrow(tally_cities_counties_by_type) == 0) {
+      stop("ERROR: No tally. Did you make a typo?")
+    }
+
   # save the state data to a new .csv file in the output directory
-  write.csv(state_data, file = paste0("output/",
+  # write out the result of the dplyr chain
+  write.csv(tally_cities_counties_by_type,
+            file = paste0("output/02_state_tally_data/",
                                       tools::file_path_sans_ext(basename(
                                         input_file_name)),
-                                      "_",
-                                      state_to_subset,
-                                      ".csv"))
-
-
-  }
-
-
-
-                                  }
+                                      "_tally_cities_counties.csv"))
+}
