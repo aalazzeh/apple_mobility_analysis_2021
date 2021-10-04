@@ -7,7 +7,7 @@
 # September 16, 2021
 
 # create a function to subset any US state out of the full dataset
-# this should also create an output CSV file that is named based on the sate
+# this should also create an output CSV file that is named based on the state
 # that is subsetted
 subset_mobility_data_to_state <- function(input_file_name,
                                            state_to_subset) {
@@ -24,7 +24,7 @@ subset_mobility_data_to_state <- function(input_file_name,
   }
 
   # save the state data to a new .csv file in the output directory
-  write.csv(state_data, file = paste0("output/",
+  write.csv(state_data, file = paste0("output/01_subset_state_data/",
                                     tools::file_path_sans_ext(basename(
                                       input_file_name)),
                                     "_",
