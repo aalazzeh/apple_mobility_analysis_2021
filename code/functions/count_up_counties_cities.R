@@ -25,7 +25,7 @@ library("dplyr")
 
 count_up_counties_cities <- function(input_file_name) {
   # read in the last csv file, load in the dataset from the previous script
-  state_data <- read.csv(input_file_name)
+  state_data <- readr::read_csv(input_file_name)
 
   # Use dplyr chain to group each state by city, county and then
    # transportaion type
@@ -41,7 +41,7 @@ count_up_counties_cities <- function(input_file_name) {
 
   # save the state data to a new .csv file in the output directory
   # write out the result of the dplyr chain
-  write.csv(tally_cities_counties_by_type,
+  readr::write_csv(tally_cities_counties_by_type,
             file = paste0("output/02_state_tally_data/",
                                       tools::file_path_sans_ext(basename(
                                         input_file_name)),
