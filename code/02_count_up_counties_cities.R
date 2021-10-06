@@ -18,9 +18,7 @@ library("dplyr")
 source("code/functions/count_up_counties_cities.R")
 
 # load in the dataset from the previous script
-for (file_state in c("Montana", "Alaska", "Utah", "Colorado",
-                     "Arizona")) {
-count_up_counties_cities(input_file_name =
-        paste0("output/01_subset_state_data/applemobilitytrends-2021-09-29_",
-                                     file_state, ".csv"))
-        }
+for (file_state in list.files(full.names = TRUE,
+                              path = "output/01_subset_state_data/")) {
+  count_up_counties_cities(input_file_name = file_state)
+}
