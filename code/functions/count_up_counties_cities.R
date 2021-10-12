@@ -39,6 +39,9 @@ count_up_counties_cities <- function(input_file_name) {
       stop("ERROR: No tally. Did you make a typo?")
     }
 
+  # return the tallied data frame
+  return(tally_cities_counties_by_type)
+
   # save the state data to a new .csv file in the output directory
   # write out the result of the dplyr chain
   readr::write_csv(tally_cities_counties_by_type,

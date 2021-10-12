@@ -33,6 +33,9 @@ subset_data_to_a_state <- function(input_file_name,
   # ensures state name doesn't have any spaces ex. New_York instead of New York
   state_no_spaces <- gsub(state_to_subset, pattern = " ", replacement = "_")
 
+  # return the subsetted data frame
+  return(state_data)
+
   # save the state data to a new .csv file in the output directory
   readr::write_csv(state_data, file = paste0("output/01_subset_state_data/",
                                     tools::file_path_sans_ext(basename(
