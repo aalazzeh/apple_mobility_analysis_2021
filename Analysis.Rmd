@@ -7,9 +7,10 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
-# when knitting keeping the echo and message to TRUE allows you to see the code, messages, and troubleshooting messages that helps you while developing the code that you. If you changed the echo and 
-# message to FALSE then it would produce a clean and well formatted 
-# document without the extra notes
+# when knitting keeping the echo and message to TRUE allows you to see the
+# code, messages, and troubleshooting messages that helps you while developing
+# the code that you. If you changed the echo and message to FALSE then it would
+# produce a clean and well formatted document without the extra notes
 knitr::opts_chunk$set(echo = TRUE, message = TRUE)
 ```
 
@@ -27,12 +28,12 @@ state_no_spaces <- gsub(state_to_analyze,
 #set the name of the global data file to use
 global_file_to_process <- "data/raw_data/applemobilitytrends-2021-09-29.csv"
 
-# extract core name for output file naming use 
+# extract core name for output file naming use
 core_name <- tools::file_path_sans_ext(basename(global_file_to_process))
 ```
 
 ```{r load-packages-functions}
-# load the packages needed 
+# load the packages needed
 library("dplyr")
 library("readr")
 library("ggplot2")
@@ -41,7 +42,7 @@ library("usethis")
 library("lubridate")
 library("devtools")
 
-# load functions needed 
+# load functions needed
 source("code/functions/subset_data_to_a_state.R")
 source("code/functions/count_up_counties_cities.R")
 source("code/functions/wide_subset_data_to_long.R")
@@ -75,7 +76,8 @@ long_subset <- wide_subset_data_to_long(
 ```
 
 ```{r tallied-subset}
-# tally up the number of cities and counties in the state that have mobility # data available
+# tally up the number of cities and counties in the state that have mobility
+# data available
 tallied_subset <- count_up_counties_cities(
   input_file_name = paste0("output/01_subset_state_data/",
                         core_name,
@@ -113,13 +115,13 @@ tallied_plot
 ```
 
 ```{r plotting-time-series}
-# produce a line plot of relative driving mobility across the state with date 
+# produce a line plot of relative driving mobility across the state with date
 # on the x axis and mean relative mobility on the y axis
 
 # This allows for only driving data to be selected. From selected data
-#  we average all of the relative mobilities from a specific date to 
-# give what is now called mean_mobility. Then we create a plot right 
-# after. Note: If we go into ggplot after dplyr then we dont need the 
+#  we average all of the relative mobilities from a specific date to
+# give what is now called mean_mobility. Then we create a plot right
+# after. Note: If we go into ggplot after dplyr then we dont need the
 # first data argument because it is handed it from the end of the dplyr # chain
 timeseries_plot <- long_subset %>%
   filter(transportation_type == "driving") %>%
@@ -147,9 +149,9 @@ timeseries_plot
 ```
 
 ```{r scatter-plot}
-# Produce a scatterplot of all of the relative mobility data for driving 
+# Produce a scatterplot of all of the relative mobility data for driving
 # for any given state
-scatter_plot <- long_subset %>% 
+scatter_plot <- long_subset %>%
   filter(transportation_type == "driving") %>%
   group_by(date) %>%
   summarize(mean_mobility = mean(relative_mobility)) %>%
