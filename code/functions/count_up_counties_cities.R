@@ -39,8 +39,6 @@ count_up_counties_cities <- function(input_file_name) {
       stop("ERROR: No tally. Did you make a typo?")
     }
 
-  # return the tallied data frame
-  return(tally_cities_counties_by_type)
 
   # save the state data to a new .csv file in the output directory
   # write out the result of the dplyr chain
@@ -49,4 +47,7 @@ count_up_counties_cities <- function(input_file_name) {
                                       tools::file_path_sans_ext(basename(
                                         input_file_name)),
                                       "_tally_cities_counties.csv"))
+
+  # return the tallied data frame
+  return(tally_cities_counties_by_type)
 }
