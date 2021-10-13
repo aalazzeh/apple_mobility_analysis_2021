@@ -7,6 +7,9 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
+# when knitting keeping the echo and message to TRUE allows you to see the code, messages, and troubleshooting messages that helps you while developing the code that you. If you changed the echo and 
+# message to FALSE then it would produce a clean and well formatted 
+# document without the extra notes
 knitr::opts_chunk$set(echo = TRUE, message = TRUE)
 ```
 
@@ -14,9 +17,9 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE)
 
 ```{r set-parameters}
 # set the state to work with
-state_to_analyze <- "California"
+state_to_analyze <- "New York"
 
-# santizing the state name for output files
+# sanitizing the state name for output files
 state_no_spaces <- gsub(state_to_analyze,
                         pattern = " ",
                         replacement = "_")
@@ -50,7 +53,132 @@ This markdown file will use the `ggplot2` [@ggplot2] and `dplyr` [@dplyr] packag
 
 The goal will be to create a subset to a particular state, tally up the number of the cities and counties in that state with mobility data, and then to make several plots to visualize those data subsets.
 
-The state that this document will analyze is `r state_to_analyze`
+The state that this document will analyze is `r state_to_analyze`.
+
+## Data Processing 
+
+```{r susbet-state}
+# subset out to the chosen state using the variables set above
+state_subset <- subset_data_to_a_state(
+  input_file_name = global_file_to_process,
+  state_to_subset = state_to_analyze)
+```
+
+```{r make-subset-long}
+# convert the subsetted state data from wide to long format
+long_subset <- wide_subset_data_to_long(
+  input_file_name = paste0("output/01_subset_state_data/",
+                        core_name,
+                        "_",
+                        state_no_spaces,
+                        ".csv"))
+```
+
+```{r tallied-subset}
+# tally up the number of cities and counties in the state that have mobility # data available
+tallied_subset <- count_up_counties_cities(
+  input_file_name = paste0("output/01_subset_state_data/",
+                        core_name,
+                        "_",
+                        state_no_spaces,
+                        ".csv"))
+```
+
+## Figures
+
+```{r plot-tallied}
+# create a graphed barplot of the tallied data to include in knitted
+#document, and save that figure to the output/figures directory as a png
+tallied_plot <- ggplot(data = tallied_subset,
+                       aes(x = geo_type,
+                           y = n,
+                           fill = transportation_type)) +
+  geom_col(position = position_dodge()) +
+  labs(title = paste("Number of cities and/or counties in",
+                     state_to_analyze,
+                     "with mobility data"),
+       x = "Type of area",
+       y = "Number of areas")
+
+ggsave(plot = tallied_plot,
+       filename = paste0("output/figures/",
+                         core_name,
+                         "_",
+                         state_no_spaces,
+                         "_talied_plot.png"))
+
+# R requires you to write out the name of the plot so it can
+# produce it at the end of the code
+tallied_plot
+```
+
+```{r plotting-time-series}
+# produce a line plot of relative driving mobility across the state with date 
+# on the x axis and mean relative mobility on the y axis
+
+# This allows for only driving data to be selected. From selected data
+#  we average all of the relative mobilities from a specific date to 
+# give what is now called mean_mobility. Then we create a plot right 
+# after. Note: If we go into ggplot after dplyr then we dont need the 
+# first data argument because it is handed it from the end of the dplyr # chain
+timeseries_plot <- long_subset %>%
+  filter(transportation_type == "driving") %>%
+  group_by(date) %>%
+  summarize(mean_mobility = mean(relative_mobility)) %>%
+  ggplot(aes(x = lubridate::ymd(date),
+             y = mean_mobility)) +
+geom_line() +
+  labs(title = paste("Statewide mean realtive mobility driving levels in",
+                     state_to_analyze,
+                     "during COVID"),
+       x = "Date",
+       y = "Mean relatibe mobility")
+
+ggsave(plot = timeseries_plot,
+       filename = paste0("output/figures/",
+                         core_name,
+                         "_",
+                         state_no_spaces,
+                         "_timeseries_plot.png"))
+
+# R requires you to write out the name of the plot so it can
+# produce it at the end of the code
+timeseries_plot
+```
+
+```{r scatter-plot}
+# Produce a scatterplot of all of the relative mobility data for driving 
+# for any given state
+scatter_plot <- long_subset %>% 
+  filter(transportation_type == "driving") %>%
+  group_by(date) %>%
+  summarize(mean_mobility = mean(relative_mobility)) %>%
+  ggplot(aes(x = lubridate::ymd(date),
+                           y = mean_mobility)) +
+  geom_point() +
+  labs(title = paste("Scatterplot of mean relative driving mobility data for",
+                     state_to_analyze,
+                     "during COVID"),
+       x = "Date",
+       y = "Mean relatibe mobility")
+
+ggsave(plot = scatter_plot,
+       filename = paste0("output/figures/",
+                         core_name,
+                         "_",
+                         state_no_spaces,
+                         "_scatter_plot.png"))
+
+scatter_plot
+```
+
+
+## Session Info
+
+```{r session-info}
+devtools::session_info()
+```
+
 
 
 ## Sources Cited
