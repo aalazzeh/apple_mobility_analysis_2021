@@ -35,6 +35,3 @@ wide_subset_data_to_long <- function(input_file_name) {
                                                   basename(input_file_name)),
                                                 "_subset_state_long_data.csv"))
 }
-
-
-

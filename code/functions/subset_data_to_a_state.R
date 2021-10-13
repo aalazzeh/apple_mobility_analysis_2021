@@ -44,4 +44,3 @@ subset_data_to_a_state <- function(input_file_name,
   # return the subsetted data frame
   return(state_data)
 }
-
