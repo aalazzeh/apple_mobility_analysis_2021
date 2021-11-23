@@ -13,6 +13,7 @@ It currently uses dplyr to work with some of the tabular data. Eventually, it wi
 
 ### Change Log
 
+* 2021-11-22: Created analyze_sequences branch and created a bash script that parses through SARS-CoV-2 sequencing data. This counts up the number of sequences in the fasta file and tallys up the sequences per each country from highest to lowest.
 * 2021-11-14: Parameterize Rmd and add bash script to drive knitting
 * 2021-10-31: Created the parameterize-rmd branch and is 
 currently being updated * 2021-10-12: Complete Rmd to drive 
