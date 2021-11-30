@@ -166,7 +166,7 @@ scatter_plot <- long_subset %>%
                      state_to_analyze,
                      "during COVID"),
        x = "Date",
-       y = "Mean relatibe mobility")
+       y = "Mean relative mobility")
 
 ggsave(plot = scatter_plot,
        filename = paste0("output/figures/",
@@ -193,7 +193,7 @@ seq_count_plot <- ggplot(data = seqs_by_country,
                          aes(x = count,
                              y = reorder(country, count))) + 
         geom_col() +
-        coord_trans(x='log10') +
+        scale_x_log10() +
         labs(title = "Count of SARS-CoV-2 sequences per country",
              x = "Count of Sequences",
              y = "Country Name")
