@@ -13,7 +13,9 @@ It currently uses dplyr to work with some of the tabular data. Eventually, it
 will also include use of ggplot2 to visualize the dataset.
 
 ### Change Log
+
 * 2021-11-29: Add a makefile to allow for more efficient output processing 
+* 2021-11-22: Created analyze_sequences branch and created a bash script that parses through SARS-CoV-2 sequencing data. This counts up the number of sequences in the fasta file and tallys up the sequences per each country from highest to lowest.
 * 2021-11-14: Parameterize Rmd and add bash script to drive knitting
 * 2021-10-31: Created the parameterize-rmd branch and is currently being updated 
 * 2021-10-12: Complete Rmd to drive entire analysis 
@@ -25,6 +27,3 @@ will also include use of ggplot2 to visualize the dataset.
 * 2021-09-25: I corrected the function subset_mobility_data_to_state to match the same name as the file exactly. Also in the 01_subset_data_to_AL_only found in the code and then archived files folder was corrected for snake_case and comma mistakes using linting.I also created a new folder called notes that contains the untouched and not clean versions of my scripts including notes_and_untouched_script_for_subset_mobility_data_to_state 
 * 2021-09-16: A new version of the data file was downloaded, and I also worked to refactor the code to be more general and to allow for any state to be subset from the larger file. I also created a functions folder in the code folder that includes the function to allow for any state to be subset from the data. This allowed me to simplify my script to just source the function allowing for a more clean script. Additionally I created a notes_and_not_clean_script_for_data_of_any_state that has all the notes and pre-clean up of all my work. 
 * 2021-08-31: The data file was originally downloaded for analysis.
-
-
-
