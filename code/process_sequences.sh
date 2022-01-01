@@ -17,17 +17,13 @@ then
 	exit 1
 fi
 
-# Check to see if file contains data in the file
-if ! grep -q '[^[:space:]]' "$1"; then
-    echo "file is empty"
-else
-    echo "File has data"
+# First check to see if all sequence counts are present
+# Second, output a tally of the total number of SARS-CoV-2 sequences in the dataset from 
+# each country sorted from largest to smallest
+if [ "$2" = 'ALL' ]
+then
+	echo "Total number of sequences:" "$(bioawk -c fastx 'END{print NR}' "$1")"
 fi
-
-
-# Output a report containing the total number of sequences in the SARS-CoV-2 fasta file 
-	echo "Total number of sequences:"
-	bioawk -c fastx 'END{print NR}' "$1"
 
 
 # Output a tally of the total number of SARS-CoV-2 sequences in the dataset from 
